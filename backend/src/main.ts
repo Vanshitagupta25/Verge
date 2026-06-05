@@ -12,7 +12,7 @@ async function bootstrap() {
   app.useStaticAssets(join(__dirname, '..', 'uploads'), {
     prefix: '/uploads/',
     setHeaders: (res) => {
-      res.set('Access-Control-Allow-Origin', 'http://localhost:3000');
+      res.set('Access-Control-Allow-Origin', '*');
       res.set('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS');
       res.set('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
     },
@@ -30,7 +30,6 @@ async function bootstrap() {
   }));
 
   const port = process.env.PORT || 8000;
-  console.log(port)
   await app.listen(port, '0.0.0.0');
 }
 bootstrap();

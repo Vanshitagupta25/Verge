@@ -48,7 +48,7 @@ export default function RootLayout({
       <body className="font-sans antialiased bg-[#111827] text-gray-100">
         {children}
         <Toaster position="top-right" reverseOrder={false} />
-        {process.env.NODE_ENV === 'production' && <Analytics />}
+        <Analytics />
       </body>
     </html>
   )
