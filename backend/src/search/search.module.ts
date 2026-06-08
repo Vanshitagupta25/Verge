@@ -1,4 +1,3 @@
-// src/search/search.module.ts
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { SearchController } from './search.controller';

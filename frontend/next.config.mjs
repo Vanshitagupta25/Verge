@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: false,
 
-  allowedDevOrigins: ['192.168.1.109'],
+  allowedDevOrigins: ['192.168.1.150'],
   
   typescript: {
     ignoreBuildErrors: true,

@@ -2,7 +2,7 @@
 
 import { X, MessageCircle, Trash2, Reply, Send } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
-import type { Post, Comment } from '@/app/page';
+import type { Post, Comment } from '@/src/app/page';
 
 interface ThreadDrawerProps {
   post: Post;
@@ -36,10 +36,10 @@ const NestedComment = ({
   return (
     <div className={`${indentClass} pb-6`}>
       <div className={`${borderClass}`}>
-        {/* Comment Header */}
+        {/* Header */}
         <div className="flex items-start gap-3 group">
           <div className={`w-8 h-8 rounded-full ${comment.color} flex items-center justify-center text-white text-xs font-bold flex-shrink-0`}>
-            {comment.author.charAt(0)}
+            {comment.authorId.charAt(0)}
           </div>
 
           <div className="flex-1 min-w-0">
@@ -55,10 +55,8 @@ const NestedComment = ({
               )}
             </div>
 
-            {/* Comment Content */}
             <p className="text-sm text-white/90 mt-2 leading-relaxed break-words">{comment.content}</p>
 
-            {/* Reply Button - passes comment id and author for targeting */}
             <button
               onClick={() => onReply(comment.id, comment.author)}
               className="mt-2 inline-flex items-center gap-1.5 text-xs font-medium text-white/60 hover:text-[#00A870] transition-colors"
@@ -70,7 +68,6 @@ const NestedComment = ({
         </div>
       </div>
 
-      {/* Nested Replies */}
       {childComments.length > 0 && (
         <div className="mt-4">
           {childComments.map((childComment) => (
@@ -109,7 +106,6 @@ export default function ThreadDrawer({
 
   const rootComments = comments.filter(c => c.parentId === null);
 
-  // Scroll-spy logic: hide Create Post button when scrolled into comment zone
   useEffect(() => {
     const scrollContainer = scrollContainerRef.current;
     const commentsStart = commentsStartRef.current;
@@ -119,10 +115,9 @@ export default function ThreadDrawer({
     const handleScroll = () => {
       const commentsRect = commentsStart.getBoundingClientRect();
       const containerRect = scrollContainer.getBoundingClientRect();
-      
-      // Check if comments section is in view (user has scrolled into comment zone)
+
       const isInCommentZone = commentsRect.top < containerRect.top + 100;
-      
+
       if (isInCommentZone !== hasScrolledIntoComments) {
         setHasScrolledIntoComments(isInCommentZone);
         if (onHideCreatePost) {
@@ -145,7 +140,6 @@ export default function ThreadDrawer({
   const handleInputBlur = () => {
     if (!replyContent.trim()) {
       setIsInputFocused(false);
-      // Only show Create Post if not scrolled into comments
       if (onHideCreatePost && !hasScrolledIntoComments) {
         onHideCreatePost(false);
       }
@@ -166,7 +160,6 @@ export default function ThreadDrawer({
 
   const handleReplyToComment = (commentId: string, author: string) => {
     setReplyingTo({ id: commentId, author });
-    // Focus the input when replying
     inputRef.current?.focus();
   };
 
@@ -197,7 +190,6 @@ export default function ThreadDrawer({
 
       {/* Scrollable Content */}
       <div ref={scrollContainerRef} className="flex-1 overflow-y-auto">
-        {/* Parent Post - Pinned */}
         <div className="px-6 py-5 border-b border-[#00845C]/50 bg-[#0a0a0a] sticky top-0 z-5">
           <div className="mb-3">
             <span className="text-xs font-bold text-[#00A870] uppercase tracking-wider">Parent Post</span>
@@ -231,7 +223,6 @@ export default function ThreadDrawer({
           </div>
         </div>
 
-        {/* Comments Section - marker for scroll-spy */}
         <div ref={commentsStartRef} className="px-6 py-6">
           {rootComments.length > 0 ? (
             <div className="space-y-4">
@@ -256,7 +247,6 @@ export default function ThreadDrawer({
         </div>
       </div>
 
-      {/* Reply Input */}
       <div className="px-6 py-5 border-t border-[#00845C] bg-[#0a0a0a] backdrop-blur-sm space-y-3">
         {replyingTo && (
           <div className="bg-[#1a1a1a] px-3 py-2 rounded-lg flex items-center justify-between text-xs border border-[#333]">

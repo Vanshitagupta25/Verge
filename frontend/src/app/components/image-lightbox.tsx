@@ -29,12 +29,12 @@ export default function ImageLightbox({
 
     if (isOpen) {
       document.addEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = 'hidden'; // Lock background scrolling
+      document.body.style.overflow = 'hidden';
     }
 
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = 'unset'; // Unlock background scrolling
+      document.body.style.overflow = 'unset';
     };
   }, [isOpen, onClose]);
 
@@ -51,7 +51,6 @@ export default function ImageLightbox({
           className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-md flex flex-col justify-between"
           onClick={onClose}
         >
-          {/* Top Header Navigation Strip */}
           <div className="w-full flex justify-between items-center p-4 bg-gradient-to-b from-black/60 to-transparent z-10">
             <span className="text-xs font-mono text-gray-400 select-none">
               {postId ? `Post Reference: ${postId.slice(-6)}` : 'Media Viewer'}
@@ -66,7 +65,7 @@ export default function ImageLightbox({
             </motion.button>
           </div>
 
-          {/* Main Hero Image Frame */}
+          {/* Main Container*/}
           <div className="flex-1 flex items-center justify-center p-4 md:p-8" onClick={onClose}>
             {hasValidUrl ? (
               <motion.img
@@ -77,7 +76,7 @@ export default function ImageLightbox({
                 src={imageUrl}
                 alt="Full screen media presentation view"
                 className="max-w-full max-h-[75vh] md:max-h-[80vh] object-contain rounded-lg shadow-2xl border border-gray-800"
-                onClick={(e) => e.stopPropagation()} // Prevents closing lightbox when clicking image directly
+                onClick={(e) => e.stopPropagation()}
                 crossOrigin="anonymous"
               />
             ) : (
@@ -88,7 +87,6 @@ export default function ImageLightbox({
             )}
           </div>
 
-          {/* Interactive Bottom Overlay metrics */}
           <div 
             className="w-full bg-gradient-to-t from-black/80 via-black/40 to-transparent pb-8 pt-12 px-4 flex justify-center"
             onClick={(e) => e.stopPropagation()}
@@ -99,7 +97,6 @@ export default function ImageLightbox({
                 animate={{ opacity: 1, y: 0 }}
                 className="flex items-center gap-6 bg-gray-900/80 border border-gray-800 px-6 py-2.5 rounded-full shadow-lg backdrop-blur-sm text-sm text-gray-300"
               >
-                {/* Score Indicator */}
                 <div className="flex items-center gap-3">
                   <div className="flex items-center gap-1 text-emerald-400">
                     <ChevronUp size={16} />
@@ -114,7 +111,6 @@ export default function ImageLightbox({
 
                 <div className="w-[1px] h-4 bg-gray-800" />
 
-                {/* Direct Comments Count */}
                 <div className="flex items-center gap-1.5 text-blue-400">
                   <MessageCircle size={16} />
                   <span className="font-semibold text-gray-200 font-mono">{metrics.comments || 0}</span>

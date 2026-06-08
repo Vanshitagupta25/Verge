@@ -3,9 +3,9 @@
 import { X, Image as ImageIcon, Send, Upload } from 'lucide-react';
 import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import type { User } from '@/app/page';
+import type { User } from '@/src/app/page';
 import toast from 'react-hot-toast';
-import api from '@/app/api/api';
+import api from '../api/api'
 
 interface PostCreationScreenProps {
   isOpen: boolean;

@@ -23,7 +23,7 @@ export const DeleteModal: React.FC<DeleteModalProps> = ({
     <AnimatePresence>
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          {/* 🌑 Dark Backdrop Overlay */}
+          {/* Dark Backdrop Overlay */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -32,7 +32,7 @@ export const DeleteModal: React.FC<DeleteModalProps> = ({
             className="fixed inset-0 bg-black/60 backdrop-blur-sm"
           />
 
-          {/* 📦 Modal Box Content */}
+          {/* Modal Box Content */}
           <motion.div
             initial={{ scale: 0.95, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}

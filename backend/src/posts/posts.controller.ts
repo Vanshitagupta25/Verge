@@ -32,6 +32,10 @@ export class PostsController {
       cleanChannelId,
     );
   }
+  @Get('test-cors')
+  testCors() {
+  return { message: 'CORS is working!' };
+  }
   @Get()
   async getFeed(
     @Query('limit') limit: string,

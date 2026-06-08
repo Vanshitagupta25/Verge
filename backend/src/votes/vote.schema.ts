@@ -15,5 +15,4 @@ export class Vote {
   type: 'up' | 'down';
 }
 
-// 🎯 No unique indexes here anymore so records can accumulate continuously
 export const VoteSchema = SchemaFactory.createForClass(Vote);

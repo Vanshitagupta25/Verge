@@ -3,7 +3,7 @@
 import { ChevronDown, LogOut, Pencil, Camera } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import type { User } from '@/app/page';
+import type { User } from '@/src/app/page';
 import axios from 'axios';
 
 interface ProfileToggleProps {
@@ -20,8 +20,7 @@ export default function ProfileToggle({ currentUser, onUpdateUsername, onUpdateA
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  
-  // Reference hook to detect clicks outside the toggle element area
+
   const componentRef = useRef<HTMLDivElement>(null);
 
   const BACKEND_STATIC_URL = 'http://localhost:8000/uploads';
@@ -32,7 +31,6 @@ export default function ProfileToggle({ currentUser, onUpdateUsername, onUpdateA
     }
   }, [currentUser]);
 
-  // FEATURE 1 FIX: Global click handler to close menu when clicking anywhere on UI
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
       if (componentRef.current && !componentRef.current.contains(event.target as Node)) {
@@ -49,7 +47,6 @@ export default function ProfileToggle({ currentUser, onUpdateUsername, onUpdateA
     };
   }, [isOpen]);
 
-  // FEATURE 2 FIX: Locks body window feed contents scroll track when dropdown edit mode is active
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -141,7 +138,7 @@ export default function ProfileToggle({ currentUser, onUpdateUsername, onUpdateA
 
   const getAvatarSrc = () => {
     if (avatarPreview) return avatarPreview;
-    
+
     const dbAvatar = currentUser.avatarUrl || currentUser.avatar;
     if (dbAvatar) {
       if (dbAvatar.startsWith('http://') || dbAvatar.startsWith('https://') || dbAvatar.startsWith('blob:')) {
@@ -176,7 +173,7 @@ export default function ProfileToggle({ currentUser, onUpdateUsername, onUpdateA
               {currentDisplayName.charAt(0).toUpperCase()}
             </div>
           )}
-          
+
           <span className="text-sm font-semibold text-white truncate flex-1 text-left whitespace-nowrap overflow-hidden">
             {currentDisplayName}
           </span>
@@ -224,7 +221,7 @@ export default function ProfileToggle({ currentUser, onUpdateUsername, onUpdateA
                     className="hidden"
                   />
                 </div>
-                
+
                 <div className="flex-1 min-w-0">
                   <p className="text-lg text-white font-medium truncate">{currentDisplayName}</p>
                   <p className="text-xs text-gray-400 capitalize truncate">{currentUser.role || 'Member'}</p>

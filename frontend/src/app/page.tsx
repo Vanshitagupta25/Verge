@@ -2,13 +2,14 @@
 
 import { useState, useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
-import api from '@/app/api/api'
-import Sidebar from '@/components/sidebar';
-import Feed from '@/components/feed';
-import FloatingPostFAB from '@/components/floating-post-fab';
-import PostCreationScreen from '@/components/post-creation-screen';
-import ChannelOnboarding from '@/components/channel-onboarding';
-import SearchModal from '@/components/search-modal';
+import api from './api/api'
+import Sidebar from './components/sidebar';
+import Feed from './pages/feed';
+import FloatingPostFAB from './components/floating-post-fab';
+import type { User, Channel } from './types/user';
+import PostCreationScreen from './components/post-creation-screen';
+import ChannelOnboarding from './pages/ChannelOnboarding';
+import SearchModal from './components/search-modal';
 import toast from 'react-hot-toast';
 
 export interface Channel {
@@ -81,31 +82,7 @@ export default function Page() {
       setActiveChannelId(channels[0]._id);
     }
   }, [channels]);
-
-  const activeChannel = channels.find(
-    c => c._id === activeChannelId
-  );
-
-  // Hydrate session from localStorage
-  useEffect(() => {
-    try {
-      const token = window.localStorage.getItem('token');
-      const savedUserData = window.localStorage.getItem('verge_user');
-      const hasCompletedOnboarding = window.localStorage.getItem('verge_onboarding_complete');
-
-      if (token && savedUserData) {
-        setCurrentUser(JSON.parse(savedUserData));
-        setIsAuthenticated(true);
-
-        if (hasCompletedOnboarding !== 'true') {
-          setShowOnboarding(true);
-        }
-      }
-    } catch (error) {
-      console.error("Hydration error:", error);
-    }
-    setIsHydrated(true);
-  }, []);
+  
   useEffect(() => {
     const fetchChannels = async () => {
       try {
@@ -141,7 +118,6 @@ export default function Page() {
   const addPost = (newPost: Post) => {
     const formattedPost: Post = {
       ...newPost,
-      // Agar authorId object nahi hai, toh use ui format ke hisab se mock populate kar do
       authorId: typeof newPost.authorId === 'string' ? {
         _id: newPost.authorId,
         name: currentUser?.username || currentUser?.name || 'You'
@@ -149,9 +125,6 @@ export default function Page() {
       author: newPost.author || currentUser?.username || 'You'
     };
 
-    console.log("Rendering loop me push hone wala completely formatted post:", formattedPost)
-    console.log("Naya Post Channel ID:", newPost.channelId);
-    console.log("Abhi selected Active Channel ID:", activeChannelId);
     setPosts((prev) => [newPost, ...prev]);
     setShowPostCreation(false);
     toast.success('Post is created successfully!');
@@ -267,7 +240,6 @@ export default function Page() {
 
   return (
     <div className="flex h-screen overflow-hidden bg-[#111827] text-white">
-      {/* Left Sidebar Control Navigation */}
       {currentUser && (
         <Sidebar
           channels={channels}
@@ -278,7 +250,7 @@ export default function Page() {
         />
       )}
 
-      {/* Main Container Layer for Post Feed Elements */}
+      {/* Main Container */}
       <main className="flex-1 overflow-y-auto relative border-l border-gray-800">
         <Feed
           posts={posts}
@@ -298,14 +270,11 @@ export default function Page() {
           onCreatePost={addPost}
           onOpenSearch={() => setShowSearchModal(true)}
         />
-
-        {/* Dynamic Action Trigger FAB */}
         {isAuthenticated && (
           <FloatingPostFAB onClick={() => setShowPostCreation(true)} />
         )}
       </main>
 
-      {/* Modals & Screen Overlays Controllers */}
       <AnimatePresence>
         {showPostCreation && (
           <PostCreationScreen

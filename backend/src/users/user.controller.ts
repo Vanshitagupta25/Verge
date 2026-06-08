@@ -1,4 +1,3 @@
-// src/users/users.controller.ts
 import { Controller, Patch, Body, UseInterceptors, UploadedFile, BadRequestException, UseGuards } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';

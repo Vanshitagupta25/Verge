@@ -1,9 +1,9 @@
 'use client';
 
-import { Search, X, Hash, User, Loader2} from 'lucide-react';
+import { Search, X, Hash, Loader2 } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import type { Channel, User as UserType } from '@/app/page';
+import type { Channel, User } from '../types/user'
 import axios from 'axios';
 
 interface SearchModalProps {
@@ -11,6 +11,8 @@ interface SearchModalProps {
   onClose: () => void;
   onSelectChannel?: (channelId: string) => void;
   onSelectUser?: (userId: string) => void;
+  channels: Channel[];
+  users: User[];
 }
 interface BackendUser {
   _id: string;
@@ -33,11 +35,11 @@ interface SearchResponse {
     channels: BackendChannel[];
   };
 }
-export default function SearchModal({ 
-  isOpen, 
-  onClose, 
+export default function SearchModal({
+  isOpen,
+  onClose,
   onSelectChannel,
-  onSelectUser 
+  onSelectUser
 }: SearchModalProps) {
   const [query, setQuery] = useState('');
   const [fetchedChannels, setFetchedChannels] = useState<BackendChannel[]>([]);
@@ -45,14 +47,12 @@ export default function SearchModal({
   const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Focus input when modal opens
   useEffect(() => {
     if (isOpen && inputRef.current) {
       setTimeout(() => inputRef.current?.focus(), 100);
     }
   }, [isOpen]);
 
-  // Handle escape key
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -89,7 +89,6 @@ export default function SearchModal({
         );
 
         if (response.data.success) {
-          // Force set the array safely directly from backend response payload
           setFetchedChannels(response.data.data.channels || []);
           setFetchedUsers(response.data.data.users || []);
         }
@@ -114,7 +113,7 @@ export default function SearchModal({
     onClose();
   };
 
-return (
+  return (
     <AnimatePresence>
       {isOpen && (
         <motion.div
@@ -160,7 +159,7 @@ return (
 
             {/* Live Results Stream Area */}
             <div className="max-h-80 overflow-y-auto">
-              
+
               {/* Dynamic Channels Section */}
               {fetchedChannels.length > 0 && (
                 <div className="p-2">
@@ -176,7 +175,7 @@ return (
                       className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-[#1f2937] transition-colors text-left"
                     >
                       {channel.logoUrl ? (
-                        <img 
+                        <img
                           src={`http://localhost:8000/uploads/${channel.logoUrl}`}
                           alt={channel.name || 'channel'}
                           crossOrigin="anonymous"
@@ -216,7 +215,7 @@ return (
                       className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-[#1f2937] transition-colors text-left"
                     >
                       {user.avatarUrl ? (
-                        <img 
+                        <img
                           src={`http://localhost:8000/uploads/${user.avatarUrl}`}
                           alt={user.name}
                           crossOrigin="anonymous"

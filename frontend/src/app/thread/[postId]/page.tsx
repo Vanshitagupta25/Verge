@@ -65,7 +65,6 @@ const NestedComment = ({
   const indentClass = depth > 0 ? 'ml-6 md:ml-8' : '';
   const borderClass = depth > 0 ? 'border-l-2 border-[#374151] hover:border-[#00A870]/50 pl-4 transition-colors' : '';
 
-  // Validation checking ownership
   const isOwner = currentUserId && comment.authorId?._id ? String(comment.authorId._id) === String(currentUserId) : false;
 
   const handleSaveEdit = async () => {
